@@ -48,7 +48,7 @@ function init() {
         new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
         new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
         new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({map: iconLoader.load('pietro.jpg')}),//front of object
+        new THREE.MeshBasicMaterial({map: iconLoader.load('pietro.jpg')}),//front of object avatar
     ]
 
     const cube = new THREE.Mesh(geometry, material);
@@ -189,16 +189,9 @@ function init() {
 
 
 //FIND SKYBOX IMAGES TO TEST OUT, these were my examples inside my folder
-    const loader = new THREE.CubeTextureLoader();
-    const cmtexture = loader.load([
-    '../space/tropic_ft.jpg',
-    '../space/tropic_bk.jpg',
-    '../space/tropic_up.jpg',
-    '../space/tropic_dn.jpg',
-    '../space/tropic_lf.jpg',
-    '../space/tropic_rt.jpg',
-    ]);
-    scene.background = cmtexture;
+    const loader = new THREE.TextureLoader();
+    const bgTexture = loader.load('space/skyboxa3.png');
+    scene.background = bgTexture;
 
     // objects
 
