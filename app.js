@@ -6,7 +6,7 @@ var io = require('socket.io')(http);
 var world = require('./js/server_world');
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 app.get('/js/client_world.js', function (req, res) {
     res.sendFile(__dirname + '/js/client_world.js');
