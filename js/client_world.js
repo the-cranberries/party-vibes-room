@@ -209,28 +209,32 @@ var updatePlayerData = function () {
   playerData.r_z = player.rotation.z;
 };
 var checkKeyStates = function () {
-  if (keyState[38] || keyState[87]) {
+  if (keyState[38] && player.position.z > -21 ) {
     //up arrow or 'w' - move forward
     player.position.x -= moveSpeed * Math.sin(player.rotation.y);
     player.position.z -= moveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  if (keyState[40] || keyState[83]) {
+  //keyState[87] w key
+  
+  if (keyState[40] && player.position.z < 5) {
     //down arrow or 's' - move backward
     player.position.x += moveSpeed * Math.sin(player.rotation.y);
     player.position.z += moveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  if (keyState[37]) {
+  //keyState[83] s key
+
+  if (keyState[37] && player.position.x > -12) {
     // 'left arrow' - move left
     player.position.x -= moveSpeed * Math.cos(player.rotation.y);
     player.position.z += moveSpeed * Math.sin(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  if (keyState[39]) {
+  if (keyState[39] && player.position.x < 14) {
     // 'right arrow' - move right
     player.position.x += moveSpeed * Math.cos(player.rotation.y);
     player.position.z -= moveSpeed * Math.sin(player.rotation.y);
