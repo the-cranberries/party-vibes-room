@@ -33,6 +33,7 @@ io.on('connection', function (socket) {
         }
     });
     socket.on('updatePosition', function (data) {
+        console.log(data);
         var newData = world.updatePlayerData(data);
         socket.broadcast.emit('updatePosition', newData);
     });
