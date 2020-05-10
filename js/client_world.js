@@ -10,12 +10,12 @@ var playerData;
 
 var otherPlayers = [], otherPlayersId = [];
 
-var loadWorld = function(){
+var loadWorld = function () {
 
     init();
     animate();
 
-    function init(){
+    function init() {
 
         //Setup------------------------------------------
         container = document.getElementById('container');
@@ -25,56 +25,56 @@ var loadWorld = function(){
         scene.position.y = -5
         scene.position.z = 4
 
-        camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
         camera.position.y = 7
         camera.position.z = 20;
         camera.position.x = 0;
         camera.lookAt(scene.position)
-        
-        
-        
+
+
+
         const loader = new THREE.TextureLoader();
         const bgTexture = loader.load('background.png');
         scene.background = bgTexture;
 
-        renderer = new THREE.WebGLRenderer( { alpha: true} );
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        document.body.appendChild( renderer.domElement );
+        renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
         raycaster = new THREE.Raycaster();
         //Add Objects To the Scene HERE-------------------
 
         //Sphere------------------
-        var sphere_geometry = new THREE.SphereGeometry(1);
-        var sphere_material = new THREE.MeshNormalMaterial();
-        sphere = new THREE.Mesh( sphere_geometry, sphere_material );
+        // var sphere_geometry = new THREE.SphereGeometry(1);
+        // var sphere_material = new THREE.MeshNormalMaterial();
+        // sphere = new THREE.Mesh(sphere_geometry, sphere_material);
 
-        scene.add( sphere );
-        objects.push( sphere ); //if you are interested in detecting an intersection with this sphere
+        // scene.add(sphere);
+        // objects.push(sphere); //if you are interested in detecting an intersection with this sphere
 
         //Events------------------------------------------
-        document.addEventListener('click', onMouseClick, false );
+        document.addEventListener('click', onMouseClick, false);
         document.addEventListener('mousedown', onMouseDown, false);
         document.addEventListener('mouseup', onMouseUp, false);
         document.addEventListener('mousemove', onMouseMove, false);
         document.addEventListener('mouseout', onMouseOut, false);
-        document.addEventListener('keydown', onKeyDown, false );
-        document.addEventListener('keyup', onKeyUp, false );
-        window.addEventListener( 'resize', onWindowResize, false );
+        document.addEventListener('keydown', onKeyDown, false);
+        document.addEventListener('keyup', onKeyUp, false);
+        window.addEventListener('resize', onWindowResize, false);
 
         //Final touches-----------------------------------
-        container.appendChild( renderer.domElement );
-        document.body.appendChild( container );
+        container.appendChild(renderer.domElement);
+        document.body.appendChild(container);
     }
 
-    function animate(){
-        requestAnimationFrame( animate );
+    function animate() {
+        requestAnimationFrame(animate);
         render();
     }
-    function render(){
+    function render() {
 
-        if ( player ){
+        if (player) {
 
             // updateCameraPosition();
 
@@ -84,32 +84,32 @@ var loadWorld = function(){
         }
         //Render Scene---------------------------------------
         renderer.clear();
-        renderer.render( scene , camera );
+        renderer.render(scene, camera);
     }
 
-    function onMouseClick(){
-        intersects = calculateIntersects( event );
+    function onMouseClick() {
+        intersects = calculateIntersects(event);
 
-        if ( intersects.length > 0 ){
+        if (intersects.length > 0) {
             //If object is intersected by mouse pointer, do something
-            if (intersects[0].object == sphere){
+            if (intersects[0].object == sphere) {
                 alert("This is a sphere!");
             }
         }
     }
-    function onMouseDown(){
+    function onMouseDown() {
 
     }
-    function onMouseUp(){
+    function onMouseUp() {
 
     }
-    function onMouseMove(){
+    function onMouseMove() {
 
     }
-    function onMouseOut(){
+    function onMouseOut() {
 
     }
-    function onKeyDown( event ){
+    function onKeyDown(event) {
 
         //event = event || window.event;
 
@@ -117,7 +117,7 @@ var loadWorld = function(){
 
     }
 
-    function onKeyUp( event ){
+    function onKeyUp(event) {
 
         //event = event || window.event;
 
@@ -129,45 +129,45 @@ var loadWorld = function(){
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
     }
-    function calculateIntersects( event ){
+    function calculateIntersects(event) {
 
         //Determine objects intersected by raycaster
         event.preventDefault();
 
         var vector = new THREE.Vector3();
-        vector.set( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1, 0.5 );
-        vector.unproject( camera );
+        vector.set((event.clientX / window.innerWidth) * 2 - 1, - (event.clientY / window.innerHeight) * 2 + 1, 0.5);
+        vector.unproject(camera);
 
-        raycaster.ray.set( camera.position, vector.sub( camera.position ).normalize() );
+        raycaster.ray.set(camera.position, vector.sub(camera.position).normalize());
 
-        var intersects = raycaster.intersectObjects( objects );
+        var intersects = raycaster.intersectObjects(objects);
 
         return intersects;
     }
 
 };
 
-var createPlayer = function(data){
+var createPlayer = function (data) {
 
     playerData = data;
-    
 
-    var cube_geometry = new THREE.BoxGeometry(data.sizeX, data.sizeY*2, data.sizeZ);
+
+    var cube_geometry = new THREE.BoxGeometry(data.sizeX * 2, data.sizeY * 4, data.sizeZ * 2);
     const iconLoader = new THREE.TextureLoader();
     const cube_material = [
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({map: iconLoader.load('pietro.jpg')}),//front of object avatar
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+        new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }),//front of object avatar
     ]
     player = new THREE.Mesh(cube_geometry, cube_material);
 
-    player.rotation.set(0,0,0);
+    player.rotation.set(0, 0, 0);
 
     player.position.x = data.x;
     player.position.y = data.y;
@@ -179,10 +179,10 @@ var createPlayer = function(data){
 
     // updateCameraPosition();
 
-    objects.push( player );
-    scene.add( player );
+    objects.push(player);
+    scene.add(player);
 
-    camera.lookAt( player.position );
+    camera.lookAt(player.position);
 };
 
 // var updateCameraPosition = function(){
@@ -193,7 +193,7 @@ var createPlayer = function(data){
 
 // };
 
-var updatePlayerPosition = function(data){
+var updatePlayerPosition = function (data) {
 
     var somePlayer = playerForId(data.playerId);
 
@@ -207,7 +207,7 @@ var updatePlayerPosition = function(data){
 
 };
 
-var updatePlayerData = function(){
+var updatePlayerData = function () {
     playerData.x = player.position.x;
     playerData.y = player.position.y;
     playerData.z = player.position.z;
@@ -217,7 +217,7 @@ var updatePlayerData = function(){
     playerData.r_z = player.rotation.z;
 
 };
-var checkKeyStates = function(){
+var checkKeyStates = function () {
 
     if (keyState[38] || keyState[87]) {
         // up arrow or 'w' - move forward
@@ -262,16 +262,16 @@ var checkKeyStates = function(){
 
 };
 
-var addOtherPlayer = function(data){
-    var cube_geometry = new THREE.BoxGeometry(data.sizeX, data.sizeY*2, data.sizeZ);
+var addOtherPlayer = function (data) {
+    var cube_geometry = new THREE.BoxGeometry(data.sizeX * 2, data.sizeY * 4, data.sizeZ * 2);
     const iconLoader = new THREE.TextureLoader();
     const cube_material = [
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({color: 0x69bdd2 }),
-        new THREE.MeshBasicMaterial({map: iconLoader.load('pietro.jpg')}),//front of object avatar
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+        new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }),//front of object avatar
     ]
     var otherPlayer = new THREE.Mesh(cube_geometry, cube_material);
 
@@ -279,23 +279,23 @@ var addOtherPlayer = function(data){
     otherPlayer.position.y = data.y;
     otherPlayer.position.z = data.z;
 
-    otherPlayersId.push( data.playerId );
-    otherPlayers.push( otherPlayer );
-    objects.push( otherPlayer );
-    scene.add( otherPlayer );
+    otherPlayersId.push(data.playerId);
+    otherPlayers.push(otherPlayer);
+    objects.push(otherPlayer);
+    scene.add(otherPlayer);
 
 };
 
-var removeOtherPlayer = function(data){
+var removeOtherPlayer = function (data) {
 
-    scene.remove( playerForId(data.playerId) );
+    scene.remove(playerForId(data.playerId));
 
 };
 
-var playerForId = function(id){
+var playerForId = function (id) {
     var index;
-    for (var i = 0; i < otherPlayersId.length; i++){
-        if (otherPlayersId[i] == id){
+    for (var i = 0; i < otherPlayersId.length; i++) {
+        if (otherPlayersId[i] == id) {
             index = i;
             break;
         }
