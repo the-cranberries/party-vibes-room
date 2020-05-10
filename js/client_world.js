@@ -146,7 +146,7 @@ var createPlayer = function (data) {
 
   var cube_geometry = new THREE.BoxGeometry(
     data.sizeX * 2,
-    data.sizeY * 5,
+    data.sizeY * 4,
     data.sizeZ * 2
   );
   const iconLoader = new THREE.TextureLoader();
