@@ -263,8 +263,9 @@ var addOtherPlayer = function (data) {
     new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
     new THREE.MeshBasicMaterial({ color: 0x407294 }),
     new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-    new THREE.MeshBasicMaterial({ color: 0x407294 }),
     new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
+
+    new THREE.MeshBasicMaterial({ color: 0x407294 }),
   ];
   var otherPlayer = new THREE.Mesh(cube_geometry, cube_material);
 
