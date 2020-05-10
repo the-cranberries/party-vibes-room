@@ -33,7 +33,7 @@ var loadWorld = function () {
       1,
       1000
     );
-    camera.position.y = 7;
+    camera.position.y = 3;
     camera.position.z = 20;
     camera.position.x = 0;
     camera.lookAt(scene.position);
