@@ -209,33 +209,31 @@ var updatePlayerData = function () {
   playerData.r_z = player.rotation.z;
 };
 var checkKeyStates = function () {
-  if (keyState[38] && player.position.z > -23 ) {
+  if ((keyState[38] || keyState[87]) && player.position.z > -23 ) {
     //up arrow or 'w' - move forward
     player.position.x -= moveSpeed * Math.sin(player.rotation.y);
     player.position.z -= moveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  //keyState[87] w key
   
-  if (keyState[40] && player.position.z < 5) {
+  if ((keyState[40] || keyState[83]) && player.position.z < 5) {
     //down arrow or 's' - move backward
     player.position.x += moveSpeed * Math.sin(player.rotation.y);
     player.position.z += moveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  //keyState[83] s key
 
-  if (keyState[37] && player.position.x > -14) {
-    // 'left arrow' - move left
+  if ((keyState[37] || keyState[65]) && player.position.x > -14) {
+    // 'left arrow' or 'a' - move left
     player.position.x -= moveSpeed * Math.cos(player.rotation.y);
     player.position.z += moveSpeed * Math.sin(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  if (keyState[39] && player.position.x < 17) {
-    // 'right arrow' - move right
+  if ((keyState[39] || keyState[68]) && player.position.x < 17) {
+    // 'right arrow' or 'd'- move right
     player.position.x += moveSpeed * Math.cos(player.rotation.y);
     player.position.z -= moveSpeed * Math.sin(player.rotation.y);
     updatePlayerData();
