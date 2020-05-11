@@ -216,7 +216,7 @@ var checkKeyStates = function () {
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  
+
   if ((keyState[40] || keyState[83]) && player.position.z < 5) {
     //down arrow or 's' - move backward
     player.position.x += moveSpeed * Math.sin(player.rotation.y);
