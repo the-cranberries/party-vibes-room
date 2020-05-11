@@ -14,7 +14,7 @@ function Player(){
     this.sizeX = 1;
     this.sizeY = 1;
     this.sizeZ = 1;
-    this.speed = 0.1;
+    this.speed = 0.4;
     this.turnSpeed = 0.03;
 
 }

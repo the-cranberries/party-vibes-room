@@ -227,32 +227,32 @@ var checkKeyStates = function () {
   }
   //keyState[83] s key
 
-  if (keyState[37]) {
+  if (keyState[37] && player.position.x > -14) {
     // 'left arrow' - move left
     player.position.x -= moveSpeed * Math.cos(player.rotation.y);
     player.position.z += moveSpeed * Math.sin(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  if (keyState[39]) {
+  if (keyState[39] && player.position.x < 17) {
     // 'right arrow' - move right
     player.position.x += moveSpeed * Math.cos(player.rotation.y);
     player.position.z -= moveSpeed * Math.sin(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
-  if (keyState[65]) {
-    // a  - rotate left
-    player.rotation.y += turnSpeed;
-    updatePlayerData();
-    socket.emit('updatePosition', playerData);
-  }
-  if (keyState[68]) {
-    // d  - rotate right
-    player.rotation.y -= turnSpeed;
-    updatePlayerData();
-    socket.emit('updatePosition', playerData);
-  }
+  // if (keyState[65]) {
+  //   // a  - rotate left
+  //   player.rotation.y += turnSpeed;
+  //   updatePlayerData();
+  //   socket.emit('updatePosition', playerData);
+  // }
+  // if (keyState[68]) {
+  //   // d  - rotate right
+  //   player.rotation.y -= turnSpeed;
+  //   updatePlayerData();
+  //   socket.emit('updatePosition', playerData);
+  // }
 };
 
 var addOtherPlayer = function (data) {
