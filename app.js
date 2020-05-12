@@ -10,6 +10,7 @@ app.get('/', function (req, res) {
 });
 
 app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle connection
 io.on('connection', function (socket) {

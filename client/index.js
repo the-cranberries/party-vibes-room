@@ -4,6 +4,7 @@ import {loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOth
 const socket = io();
 
     socket.on('connect', function(){
+        console.log('socket has connected', socket.id)
         loadWorld();
         socket.emit('requestOldPlayers', {});
     });
