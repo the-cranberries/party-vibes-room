@@ -1,0 +1,62 @@
+const app = require('express')();
+const path = require('path');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const world = require('./server_world');
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
+
+app.use(app.static(path.join(__dirname, 'images')));
+
+// Handle connection
+io.on('connection', function (socket) {
+  console.log(`user ${socket.id} connected`);
+
+  //load ppl already at the party
+  socket.on('requestOldPlayers', () => {
+    // for (var i = 0; i < world.players.length; i++) {
+    //     if (world.players[i].playerId != id)
+    //         socket.emit('addOtherPlayer', world.players[i]);
+    // }
+  });
+
+  //then create new player
+
+  const id = socket.id;
+  world.addPlayer(id);
+
+  const player = world.playerForId(id);
+
+  socket.emit('createPlayer', player);
+  //sending new player to clients to render
+
+  socket.broadcast.emit('addOtherPlayer', player);
+  //telling all other clients to add this as another player
+
+  socket.on('updatePosition', function (data) {
+    console.log(data);
+    var newData = world.updatePlayerData(data);
+    socket.broadcast.emit('updatePosition', newData);
+  });
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+    io.emit('removeOtherPlayer', player);
+    world.removePlayer(player);
+  });
+});
+
+// Handle environment changes
+var port = process.env.PORT || 8080;
+var ip_address = process.env.IP || '0.0.0.0';
+
+http.listen(port, ip_address, function () {
+  console.log('Listening on ' + ip_address + ', server_port ' + port);
+});
+
+/*
+http.listen(3000, function(){
+   console.log('listening on *: 3000');
+});
+*/
