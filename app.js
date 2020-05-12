@@ -18,7 +18,7 @@ io.on('connection', function (socket) {
   //load ppl already at the party
   socket.on('requestOldPlayers', () => {
     for (var i = 0; i < world.allPlayers.length; i++) {
-        socket.emit('addOtherPlayer', world.players[i]);
+      socket.emit('addOtherPlayer', world.players[i]);
     }
   });
 
@@ -27,12 +27,12 @@ io.on('connection', function (socket) {
   const id = socket.id;
   // world.addPlayer(id);
 
-  const player = world.addPlayer(id);
+  // const player = world.addPlayer(id);
 
   // socket.emit('createPlayer', player);
   // //sending new player to clients to render
 
-  io.emit('createPlayer', player);
+  // io.emit('createPlayer', player);
   //telling ALL client to render this player and add to local environment
 
   // socket.broadcast.emit('addOtherPlayer', player);
