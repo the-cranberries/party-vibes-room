@@ -1,5 +1,6 @@
 const User = require('./user')
 const Party = require('./party')
+const PartyUser = require('./party-user')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -8,8 +9,10 @@ const Party = require('./party')
  *    BlogPost.belongsTo(User)
  */
 
-Party.belongsTo(User);
-User.hasMany(Party);
+Party.belongsTo(User)
+User.hasMany(Party)
+User.belongsToMany(Party, {through: PartyUser})
+Party.belongsToMany(User, {through: PartyUser})
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
@@ -19,5 +22,6 @@ User.hasMany(Party);
  */
 module.exports = {
   User,
-  Party
+  Party,
+  PartyUser
 }

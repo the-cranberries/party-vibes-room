@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+const { User } = require('../db/models')
 module.exports = router
 
 // const isHost = (req, reqs, next) => {
@@ -10,7 +10,7 @@ module.exports = router
 //   } next()
 // }
 
-// GET /api/user - fetches all users from db
+// GET /api/users
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -25,7 +25,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// // POST /api/user - adds user
+// // POST /api/users
 // router.post('/', async (req, res, next) => {
 //   try {
 //     const user = await User.create()
@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
 //   }
 // })
 
-// // PUT /api/user/:id - updates user
+// // PUT /api/users/:id
 // router.put('/:id', async (req, res, next) => {
 //   try {
 //     await User.update(req.body, {
@@ -49,7 +49,7 @@ router.get('/', async (req, res, next) => {
 //   }
 // })
 
-// // DELETE /api/user/:id
+// // DELETE /api/users/:id
 // router.delete('/', async (req, res, next) => {
 //   try {
 
