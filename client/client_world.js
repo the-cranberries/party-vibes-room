@@ -3,17 +3,18 @@ var container,
   camera,
   renderer,
   raycaster,
-  objects = [];
+  objects = [];       //array of player cubes
 var keyState = {};
-var sphere;
 
 var player, playerId, moveSpeed, turnSpeed;
 //player is the rendered cube
 
 var playerData; // this is the object data (from server)
 
-var otherPlayers = [],
-  otherPlayersId = [];
+// var otherPlayers = [],
+
+//connects playerID to cubeID
+const otherPlayersID = {};
 
 var loadWorld = function () {
   init();
@@ -51,14 +52,6 @@ var loadWorld = function () {
     raycaster = new THREE.Raycaster();
     //Add Objects To the Scene HERE-------------------
 
-    //Sphere------------------
-    // var sphere_geometry = new THREE.SphereGeometry(1);
-    // var sphere_material = new THREE.MeshNormalMaterial();
-    // sphere = new THREE.Mesh(sphere_geometry, sphere_material);
-
-    // scene.add(sphere);
-    // objects.push(sphere); //if you are interested in detecting an intersection with this sphere
-
     //Events------------------------------------------
     document.addEventListener('click', onMouseClick, false);
     document.addEventListener('mousedown', onMouseDown, false);
@@ -80,14 +73,9 @@ var loadWorld = function () {
   }
   function render() {
     if (player) {
-      // updateCameraPosition();
-
       checkKeyStates();
-
-      // camera.lookAt( player.position );
     }
     //Render Scene---------------------------------------
-    // renderer.clear();
     renderer.render(scene, camera);
   }
 
@@ -101,10 +89,7 @@ var loadWorld = function () {
   //     }
   //   }
   // }
-  // function onMouseDown() {}
-  // function onMouseUp() {}
-  // function onMouseMove() {}
-  // function onMouseOut() {}
+  
   function onKeyDown(event) {
     //event = event || window.event;
 
@@ -142,7 +127,22 @@ var loadWorld = function () {
   }
 };
 
+var playerForId = function (id) {
+  //get the right cubeID from otherPlayersID
+  //go through objects array until we find the right cube
+  //return that cube
+
+  let cubeID = otherPlayersID[id];
+
+  for (let i = 0; i < objects.length; i++) {
+    if (objects[i].id === cubeID)
+      return objects[i];
+  }
+};
+
+
 var createPlayer = function (data) {
+  //receiving data from the server
   playerData = data; 
 
   var cube_geometry = new THREE.BoxGeometry(
@@ -163,6 +163,7 @@ var createPlayer = function (data) {
 
   player.rotation.set(0, 0, 0);
 
+  //matching cube position to data position
   player.position.x = data.x;
   player.position.y = data.y;
   player.position.z = data.z;
@@ -171,21 +172,11 @@ var createPlayer = function (data) {
   moveSpeed = data.speed;
   turnSpeed = data.turnSpeed;
 
-  // updateCameraPosition();
-
   objects.push(player);
   scene.add(player);
 
   camera.lookAt(player.position);
 };
-
-// var updateCameraPosition = function(){
-
-//     camera.position.x = player.position.x + 6 * Math.sin( player.rotation.y );
-//     camera.position.y = player.position.y + 6;
-//     camera.position.z = player.position.z + 6 * Math.cos( player.rotation.y );
-
-// };
 
 var updatePlayerPosition = function (data) {
   var somePlayer = playerForId(data.playerId);
@@ -209,10 +200,11 @@ var updatePlayerData = function () {
   playerData.r_z = player.rotation.z;
 };
 
+//moves your player 
 var checkKeyStates = function () {
   if ((keyState[38] || keyState[87]) && player.position.z > -23 ) {
     //up arrow or 'w' - move forward
-    .position.x -= moveSpeed * Math.sin(player.rotation.y);
+    player.position.x -= moveSpeed * Math.sin(player.rotation.y);
     player.position.z -= playermoveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
@@ -276,8 +268,12 @@ var addOtherPlayer = function (data) {
   otherPlayer.position.y = data.y;
   otherPlayer.position.z = data.z;
 
-  otherPlayersId.push(data.playerId);
-  otherPlayers.push(otherPlayer);
+  // otherPlayersId.push(data.playerId);
+  // otherPlayers.push(otherPlayer);
+
+  otherPlayersID[data.id] = otherPlayer.id;
+  console.log('otherPlayersID object: ', otherPlayersID);
+
   objects.push(otherPlayer);
   scene.add(otherPlayer);
 };
@@ -286,13 +282,3 @@ var removeOtherPlayer = function (data) {
   scene.remove(playerForId(data.playerId));
 };
 
-var playerForId = function (id) {
-  var index;
-  for (var i = 0; i < otherPlayersId.length; i++) {
-    if (otherPlayersId[i] == id) {
-      index = i;
-      break;
-    }
-  }
-  return otherPlayers[index];
-};
