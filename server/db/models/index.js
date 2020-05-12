@@ -1,6 +1,6 @@
 const User = require('./user')
 const Party = require('./party')
-const PartyUser = require('./party-user')
+const PartyUser = require('./partyUser')
 
 /**
  * If we had any associations to make, this would be a great place to put them!

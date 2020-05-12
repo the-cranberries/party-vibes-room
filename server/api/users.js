@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { User } = require('../db/models')
+const { User, Party } = require('../db/models')
 module.exports = router
 
 // const isHost = (req, reqs, next) => {
@@ -20,6 +20,20 @@ router.get('/', async (req, res, next) => {
       attributes: ['id', 'email']
     })
     res.json(users)
+  } catch (err) {
+    next(err)
+  }
+})
+
+// GET /api/users/:userId/parties
+router.get('/:userId/parties', async (req, res, next) => {
+  try {
+    const parties = await Party.findAll({
+      where: {
+        userId: req.params.userId
+      }
+    })
+    res.json(parties)
   } catch (err) {
     next(err)
   }
