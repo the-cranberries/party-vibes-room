@@ -1,6 +1,6 @@
 
 // store all players
-var players = [];
+var allPlayers = [];
 
 function Player(){
 
@@ -19,26 +19,38 @@ function Player(){
 
 }
 
-var addPlayer = function(id){
+var addPlayer = function(id){       //id = socket ID
 
     var player = new Player();
     player.playerId = id;
-    players.push( player );
+    allPlayers.push( player );
 
     return player;
 };
 
 var removePlayer = function(player){
 
-    var index = players.indexOf(player);
+    var index = allPlayers.indexOf(player);
 
     if (index > -1) {
-        players.splice(index, 1);
+        allPlayers.splice(index, 1);
     }
 };
 
-var updatePlayerData = function(data){
-    var player = playerForId(data.playerId);
+var findPlayerById = function (id) {
+  var player;
+  for (var i = 0; i < allPlayers.length; i++) {
+    if (allPlayers[i].playerId === id) {
+      player = allPlayers[i];
+        return player;
+    }
+  }
+
+  return player;
+};
+
+var updatePlayerData = function(data){              //socket data
+    var player = findPlayerById(data.playerId);
     player.x = data.x;
     player.y = data.y;
     player.z = data.z;
@@ -49,23 +61,6 @@ var updatePlayerData = function(data){
     return player;
 };
 
-var playerForId = function(id){
 
-    var player;
-    for (var i = 0; i < players.length; i++){
-        if (players[i].playerId === id){
+module.exports = { allPlayers, addPlayer, removePlayer, updatePlayerData, findPlayerById };
 
-            player = players[i];
-            break;
-
-        }
-    }
-
-    return player;
-};
-
-module.exports.players = players;
-module.exports.addPlayer = addPlayer;
-module.exports.removePlayer = removePlayer;
-module.exports.updatePlayerData = updatePlayerData;
-module.exports.playerForId = playerForId;
