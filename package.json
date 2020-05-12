@@ -5,7 +5,10 @@
   "main": "/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build-client": "webpack",
+    "build-client-watch": "webpack -w",
     "start": "nodemon app.js",
+    "start-dev": "npm run build-client-watch & nodemon app.js",
     "deploy": "script/deploy",
     "heroku-token": "script/encrypt-heroku-auth-token.js"
   },
@@ -22,6 +25,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "nodemon": "^2.0.3",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "three": "^0.116.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0"
   }
 }

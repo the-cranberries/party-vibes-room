@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 var container,
   scene,
   camera,
@@ -282,3 +284,4 @@ var removeOtherPlayer = function (data) {
   scene.remove(playerForId(data.playerId));
 };
 
+export {loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer}

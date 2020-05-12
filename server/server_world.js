@@ -2,9 +2,9 @@
 // store all players
 var allPlayers = [];
 
-function Player(){
+function Player(id){
 
-    this.playerId = players.length;
+    this.playerId = id;
     this.x = 1;
     this.y = 0;
     this.z = 5;
@@ -21,8 +21,8 @@ function Player(){
 
 var addPlayer = function(id){       //id = socket ID
 
-    var player = new Player();
-    player.playerId = id;
+    var player = new Player(id);
+    // player.playerId = id;
     allPlayers.push( player );
 
     return player;
