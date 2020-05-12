@@ -9,8 +9,6 @@ const PartyUser = require('./partyUser')
  *    BlogPost.belongsTo(User)
  */
 
-Party.belongsTo(User)
-User.hasMany(Party)
 User.belongsToMany(Party, {through: PartyUser})
 Party.belongsToMany(User, {through: PartyUser})
 

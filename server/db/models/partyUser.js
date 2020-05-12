@@ -2,10 +2,12 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const PartyUser = db.define('partyUser', {
-  isHost: {
-    type: Sequelize.BOOLEAN,
-    defaultValue: false,
-  }
+  status: {
+    type: Sequelize.STRING,
+    validate: {
+      isIn: [['host', 'co-host', 'guest']]
+    }
+  },
 })
 
 module.exports = PartyUser

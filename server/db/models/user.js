@@ -41,12 +41,6 @@ const User = db.define('user', {
     defaultValue: '../../images/pietro.jpg'
     // 'https://www.publicdomainpictures.net/pictures/220000/velka/no-photo-available.jpg'
   },
-  status: {
-    type: Sequelize.STRING,
-    validate: {
-      isIn: [['host', 'co-host', 'guest']]
-    }
-  },
   spotifyId: {
     type: Sequelize.STRING,
   }
