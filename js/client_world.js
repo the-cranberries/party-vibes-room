@@ -90,20 +90,20 @@ var loadWorld = function () {
     renderer.render(scene, camera);
   }
 
-  function onMouseClick() {
-    intersects = calculateIntersects(event);
+  // function onMouseClick() {
+  //   intersects = calculateIntersects(event);
 
-    if (intersects.length > 0) {
-      //If object is intersected by mouse pointer, do something
-      if (intersects[0].object == sphere) {
-        alert('This is a sphere!');
-      }
-    }
-  }
-  function onMouseDown() {}
-  function onMouseUp() {}
-  function onMouseMove() {}
-  function onMouseOut() {}
+  //   if (intersects.length > 0) {
+  //     //If object is intersected by mouse pointer, do something
+  //     if (intersects[0].object == sphere) {
+  //       alert('This is a sphere!');
+  //     }
+  //   }
+  // }
+  // function onMouseDown() {}
+  // function onMouseUp() {}
+  // function onMouseMove() {}
+  // function onMouseOut() {}
   function onKeyDown(event) {
     //event = event || window.event;
 
@@ -156,7 +156,6 @@ var createPlayer = function (data) {
     new THREE.MeshBasicMaterial({ color: 0x407294 }),
     new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
     new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
-
     new THREE.MeshBasicMaterial({ color: 0x407294 }),
   ];
   player = new THREE.Mesh(cube_geometry, cube_material);
