@@ -16,24 +16,26 @@ io.on('connection', function (socket) {
 
   //load ppl already at the party
   socket.on('requestOldPlayers', () => {
-    // for (var i = 0; i < world.players.length; i++) {
-    //     if (world.players[i].playerId != id)
-    //         socket.emit('addOtherPlayer', world.players[i]);
-    // }
+    for (var i = 0; i < world.allPlayers.length; i++) {
+        socket.emit('addOtherPlayer', world.players[i]);
+    }
   });
 
   //then create new player
 
   const id = socket.id;
-  world.addPlayer(id);
+  // world.addPlayer(id);
 
-  const player = world.playerForId(id);
+  const player = world.addPlayer(id);
 
-  socket.emit('createPlayer', player);
-  //sending new player to clients to render
+  // socket.emit('createPlayer', player);
+  // //sending new player to clients to render
 
-  socket.broadcast.emit('addOtherPlayer', player);
-  //telling all other clients to add this as another player
+  io.emit('createPlayer', player);
+  //telling ALL client to render this player and add to local environment
+
+  // socket.broadcast.emit('addOtherPlayer', player);
+  // //telling all other clients to add this as another player
 
   socket.on('updatePosition', function (data) {
     console.log(data);
