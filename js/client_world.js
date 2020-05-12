@@ -86,7 +86,7 @@ var loadWorld = function () {
       // camera.lookAt( player.position );
     }
     //Render Scene---------------------------------------
-    renderer.clear();
+    // renderer.clear();
     renderer.render(scene, camera);
   }
 
