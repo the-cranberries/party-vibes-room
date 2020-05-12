@@ -1,56 +1,61 @@
-var app = require('express')();
-const path = require('path')
-var http = require('http').Server(app);
 const express = require('express')
-var io = require('socket.io')(http);
-var world = require('./js/server_world');
+const app = express();
+const path = require('path');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+const world = require('./server/server_world');
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
-app.get('/js/client_world.js', function (req, res) {
-    res.sendFile(__dirname + '/js/client_world.js');
+  res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-app.use(express.static(path.join(__dirname, 'images')))
+app.use(express.static(path.join(__dirname, 'images')));
 
 // Handle connection
 io.on('connection', function (socket) {
-    console.log('a user connected');
+  console.log(`user ${socket.id} connected`);
 
-    var id = socket.id;
-    world.addPlayer(id);
+  //load ppl already at the party
+  socket.on('requestOldPlayers', () => {
+    for (var i = 0; i < world.allPlayers.length; i++) {
+        socket.emit('addOtherPlayer', world.players[i]);
+    }
+  });
 
-    var player = world.playerForId(id);
-    socket.emit('createPlayer', player);
+  //then create new player
 
-    socket.broadcast.emit('addOtherPlayer', player);
+  const id = socket.id;
+  // world.addPlayer(id);
 
-    socket.on('requestOldPlayers', function () {
-        for (var i = 0; i < world.players.length; i++) {
-            if (world.players[i].playerId != id)
-                socket.emit('addOtherPlayer', world.players[i]);
-        }
-    });
-    socket.on('updatePosition', function (data) {
-        console.log(data);
-        var newData = world.updatePlayerData(data);
-        socket.broadcast.emit('updatePosition', newData);
-    });
-    socket.on('disconnect', function () {
-        console.log('user disconnected');
-        io.emit('removeOtherPlayer', player);
-        world.removePlayer(player);
-    });
+  const player = world.addPlayer(id);
 
+  // socket.emit('createPlayer', player);
+  // //sending new player to clients to render
+
+  io.emit('createPlayer', player);
+  //telling ALL client to render this player and add to local environment
+
+  // socket.broadcast.emit('addOtherPlayer', player);
+  // //telling all other clients to add this as another player
+
+  socket.on('updatePosition', function (data) {
+    console.log(data);
+    var newData = world.updatePlayerData(data);
+    socket.broadcast.emit('updatePlayerLocation', newData);
+  });
+  socket.on('disconnect', function () {
+    console.log('user disconnected');
+    io.emit('removeOtherPlayer', player);
+    world.removePlayer(player);
+  });
 });
 
 // Handle environment changes
 var port = process.env.PORT || 8080;
 var ip_address = process.env.IP || '0.0.0.0';
 
-http.listen(port, ip_address, function () {
-    console.log("Listening on " + ip_address + ", server_port " + port);
+server.listen(port, ip_address, function () {
+  console.log('Listening on ' + ip_address + ', server_port ' + port);
 });
 
 /*

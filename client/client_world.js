@@ -8,8 +8,9 @@ var keyState = {};
 var sphere;
 
 var player, playerId, moveSpeed, turnSpeed;
+//player is the rendered cube
 
-var playerData;
+var playerData; // this is the object data (from server)
 
 var otherPlayers = [],
   otherPlayersId = [];
@@ -86,24 +87,24 @@ var loadWorld = function () {
       // camera.lookAt( player.position );
     }
     //Render Scene---------------------------------------
-    renderer.clear();
+    // renderer.clear();
     renderer.render(scene, camera);
   }
 
-  function onMouseClick() {
-    intersects = calculateIntersects(event);
+  // function onMouseClick() {
+  //   intersects = calculateIntersects(event);
 
-    if (intersects.length > 0) {
-      //If object is intersected by mouse pointer, do something
-      if (intersects[0].object == sphere) {
-        alert('This is a sphere!');
-      }
-    }
-  }
-  function onMouseDown() {}
-  function onMouseUp() {}
-  function onMouseMove() {}
-  function onMouseOut() {}
+  //   if (intersects.length > 0) {
+  //     //If object is intersected by mouse pointer, do something
+  //     if (intersects[0].object == sphere) {
+  //       alert('This is a sphere!');
+  //     }
+  //   }
+  // }
+  // function onMouseDown() {}
+  // function onMouseUp() {}
+  // function onMouseMove() {}
+  // function onMouseOut() {}
   function onKeyDown(event) {
     //event = event || window.event;
 
@@ -142,7 +143,7 @@ var loadWorld = function () {
 };
 
 var createPlayer = function (data) {
-  playerData = data;
+  playerData = data; 
 
   var cube_geometry = new THREE.BoxGeometry(
     data.sizeX * 2,
@@ -156,7 +157,6 @@ var createPlayer = function (data) {
     new THREE.MeshBasicMaterial({ color: 0x407294 }),
     new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
     new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
-
     new THREE.MeshBasicMaterial({ color: 0x407294 }),
   ];
   player = new THREE.Mesh(cube_geometry, cube_material);
@@ -208,11 +208,12 @@ var updatePlayerData = function () {
   playerData.r_y = player.rotation.y;
   playerData.r_z = player.rotation.z;
 };
+
 var checkKeyStates = function () {
   if ((keyState[38] || keyState[87]) && player.position.z > -23 ) {
     //up arrow or 'w' - move forward
-    player.position.x -= moveSpeed * Math.sin(player.rotation.y);
-    player.position.z -= moveSpeed * Math.cos(player.rotation.y);
+    .position.x -= moveSpeed * Math.sin(player.rotation.y);
+    player.position.z -= playermoveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
