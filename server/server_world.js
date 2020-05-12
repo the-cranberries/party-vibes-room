@@ -8,14 +8,14 @@ function Player(){
     this.x = 1;
     this.y = 0;
     this.z = 5;
-    this.r_x = 0;
-    this.r_y = 0;
-    this.r_z = 0;
+    // this.r_x = 0;
+    // this.r_y = 0;
+    // this.r_z = 0;
     this.sizeX = 1;
     this.sizeY = 1;
     this.sizeZ = 1;
     this.speed = 0.3;
-    this.turnSpeed = 0.03;
+    // this.turnSpeed = 0.03;
 
 }
 
@@ -54,9 +54,9 @@ var updatePlayerData = function(data){              //socket data
     player.x = data.x;
     player.y = data.y;
     player.z = data.z;
-    player.r_x = data.r_x;
-    player.r_y = data.r_y;
-    player.r_z = data.r_z;
+    // player.r_x = data.r_x;
+    // player.r_y = data.r_y;
+    // player.r_z = data.r_z;
 
     return player;
 };
