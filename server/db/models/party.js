@@ -9,14 +9,14 @@ const Party = db.define('party', {
       notEmpty: true,
     }
   },
-  scheduleDate: {
+  // scheduledDate: {
+  //   type: Sequelize.DATE,
+  // },
+  startTime: { // how to get time & date from now to later???
     type: Sequelize.DATE,
   },
-  startTime: { // how to get time & date from now to later???
-    type: Sequelize.TIME,
-  },
   endTime: {
-    type: Sequelize.TIME,
+    type: Sequelize.DATE,
   },
 })
 
