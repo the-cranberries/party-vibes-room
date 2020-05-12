@@ -1,14 +1,15 @@
-const app = require('express')();
+const express = require('express')
+const app = express();
 const path = require('path');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const world = require('./server_world');
+const world = require('./server/server_world');
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-app.use(app.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'images')));
 
 // Handle connection
 io.on('connection', function (socket) {
@@ -40,7 +41,7 @@ io.on('connection', function (socket) {
   socket.on('updatePosition', function (data) {
     console.log(data);
     var newData = world.updatePlayerData(data);
-    socket.broadcast.emit('updatePosition', newData);
+    socket.broadcast.emit('updatePlayerLocation', newData);
   });
   socket.on('disconnect', function () {
     console.log('user disconnected');
@@ -53,7 +54,7 @@ io.on('connection', function (socket) {
 var port = process.env.PORT || 8080;
 var ip_address = process.env.IP || '0.0.0.0';
 
-http.listen(port, ip_address, function () {
+server.listen(port, ip_address, function () {
   console.log('Listening on ' + ip_address + ', server_port ' + port);
 });
 
