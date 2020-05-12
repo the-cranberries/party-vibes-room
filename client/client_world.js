@@ -8,8 +8,9 @@ var keyState = {};
 var sphere;
 
 var player, playerId, moveSpeed, turnSpeed;
+//player is the rendered cube
 
-var playerData;
+var playerData; // this is the object data (from server)
 
 var otherPlayers = [],
   otherPlayersId = [];
@@ -142,7 +143,7 @@ var loadWorld = function () {
 };
 
 var createPlayer = function (data) {
-  playerData = data;
+  playerData = data; 
 
   var cube_geometry = new THREE.BoxGeometry(
     data.sizeX * 2,
@@ -207,11 +208,12 @@ var updatePlayerData = function () {
   playerData.r_y = player.rotation.y;
   playerData.r_z = player.rotation.z;
 };
+
 var checkKeyStates = function () {
   if ((keyState[38] || keyState[87]) && player.position.z > -23 ) {
     //up arrow or 'w' - move forward
-    player.position.x -= moveSpeed * Math.sin(player.rotation.y);
-    player.position.z -= moveSpeed * Math.cos(player.rotation.y);
+    .position.x -= moveSpeed * Math.sin(player.rotation.y);
+    player.position.z -= playermoveSpeed * Math.cos(player.rotation.y);
     updatePlayerData();
     socket.emit('updatePosition', playerData);
   }
