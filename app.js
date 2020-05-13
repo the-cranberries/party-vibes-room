@@ -6,10 +6,11 @@ const io = require('socket.io')(server);
 const world = require('./server/server_world');
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.use(express.static(path.join(__dirname, 'images')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle connection
 io.on('connection', function (socket) {
@@ -52,10 +53,10 @@ io.on('connection', function (socket) {
 
 // Handle environment changes
 var port = process.env.PORT || 8080;
-var ip_address = process.env.IP || '0.0.0.0';
+// var ip_address = process.env.IP || '0.0.0.0';
 
-server.listen(port, ip_address, function () {
-  console.log('Listening on ' + ip_address + ', server_port ' + port);
+server.listen(port, function () {
+  console.log('Listening on port ' + port);
 });
 
 /*

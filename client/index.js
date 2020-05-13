@@ -1,19 +1,26 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-// import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-// import history from './history'
-// import store from './store'
-import App from './app'
+import io from 'socket.io-client'
+import { loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer } from './client_world'
 
-// establishes socket connection
-// import './socket'
+const socket = io();
 
-ReactDOM.render(
-    // <Provider store={store}>
-    <Router>
-        <App />
-    </Router>,
-    // </Provider>,
-    document.getElementById('app')
-)
+socket.on('connect', function () {
+    console.log('socket has connected', socket.id)
+    loadWorld();
+    socket.emit('requestOldPlayers', {});
+});
+
+socket.on('createPlayer', function (data) {
+    createPlayer(data);
+});
+
+socket.on('addOtherPlayer', function (data) {
+    addOtherPlayer(data);
+});
+
+socket.on('updatePlayerLocation', function (data) {
+    updatePlayerPosition(data);
+});
+
+socket.on('removeOtherPlayer', function (data) {
+    removeOtherPlayer(data);
+});
