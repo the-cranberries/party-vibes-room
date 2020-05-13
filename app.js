@@ -11,6 +11,7 @@ app.get('/', function (req, res) {
 
 app.use(express.static(path.join(__dirname, 'images')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'client')));
 
 // Handle connection
 io.on('connection', function (socket) {
@@ -19,7 +20,7 @@ io.on('connection', function (socket) {
   //load ppl already at the party
   socket.on('requestOldPlayers', () => {
     for (var i = 0; i < world.allPlayers.length; i++) {
-        socket.emit('addOtherPlayer', world.players[i]);
+        socket.emit('addOtherPlayer', world.allPlayers[i]);
     }
   });
 

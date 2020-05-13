@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+// import * as THREE from 'three'
 
 var container,
   scene,
@@ -56,10 +56,10 @@ var loadWorld = function () {
 
     //Events------------------------------------------
     document.addEventListener('click', onMouseClick, false);
-    document.addEventListener('mousedown', onMouseDown, false);
-    document.addEventListener('mouseup', onMouseUp, false);
-    document.addEventListener('mousemove', onMouseMove, false);
-    document.addEventListener('mouseout', onMouseOut, false);
+    // document.addEventListener('mousedown', onMouseDown, false);
+    // document.addEventListener('mouseup', onMouseUp, false);
+    // document.addEventListener('mousemove', onMouseMove, false);
+    // document.addEventListener('mouseout', onMouseOut, false);
     document.addEventListener('keydown', onKeyDown, false);
     document.addEventListener('keyup', onKeyUp, false);
     window.addEventListener('resize', onWindowResize, false);
@@ -81,16 +81,16 @@ var loadWorld = function () {
     renderer.render(scene, camera);
   }
 
-  // function onMouseClick() {
-  //   intersects = calculateIntersects(event);
+  function onMouseClick() {
+    // intersects = calculateIntersects(event);
 
-  //   if (intersects.length > 0) {
-  //     //If object is intersected by mouse pointer, do something
-  //     if (intersects[0].object == sphere) {
-  //       alert('This is a sphere!');
-  //     }
-  //   }
-  // }
+    // if (intersects.length > 0) {
+    //   //If object is intersected by mouse pointer, do something
+    //   if (intersects[0].object == sphere) {
+    //     alert('This is a sphere!');
+    //   }
+    // }
+  }
   
   function onKeyDown(event) {
     //event = event || window.event;
@@ -207,9 +207,9 @@ var checkKeyStates = function () {
   if ((keyState[38] || keyState[87]) && player.position.z > -23 ) {
     //up arrow or 'w' - move forward
     player.position.x -= moveSpeed * Math.sin(player.rotation.y);
-    player.position.z -= playermoveSpeed * Math.cos(player.rotation.y);
+    player.position.z -= moveSpeed * Math.cos(player.rotation.y);
     // updatePlayerData();
-    socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    // socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
   }
 
   if ((keyState[40] || keyState[83]) && player.position.z < 5) {
@@ -217,7 +217,7 @@ var checkKeyStates = function () {
     player.position.x += moveSpeed * Math.sin(player.rotation.y);
     player.position.z += moveSpeed * Math.cos(player.rotation.y);
     // updatePlayerData();
-    socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    // socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
   }
 
   if ((keyState[37] || keyState[65]) && player.position.x > -14) {
@@ -225,14 +225,14 @@ var checkKeyStates = function () {
     player.position.x -= moveSpeed * Math.cos(player.rotation.y);
     player.position.z += moveSpeed * Math.sin(player.rotation.y);
     // updatePlayerData();
-    socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    // socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
   }
   if ((keyState[39] || keyState[68]) && player.position.x < 17) {
     // 'right arrow' or 'd'- move right
     player.position.x += moveSpeed * Math.cos(player.rotation.y);
     player.position.z -= moveSpeed * Math.sin(player.rotation.y);
     // updatePlayerData();
-    socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    // socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
   }
   // if (keyState[65]) {
   //   // a  - rotate left
