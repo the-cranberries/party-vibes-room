@@ -6,7 +6,7 @@ const io = require('socket.io')(server);
 const world = require('./server/server_world');
 
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.use(express.static(path.join(__dirname, 'images')));

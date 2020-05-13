@@ -55,11 +55,11 @@ var loadWorld = function () {
         //Add Objects To the Scene HERE-------------------
 
         //Events------------------------------------------
-        document.addEventListener('click', onMouseClick, false);
-        document.addEventListener('mousedown', onMouseDown, false);
-        document.addEventListener('mouseup', onMouseUp, false);
-        document.addEventListener('mousemove', onMouseMove, false);
-        document.addEventListener('mouseout', onMouseOut, false);
+        // document.addEventListener('click', onMouseClick, false);
+        // document.addEventListener('mousedown', onMouseDown, false);
+        // document.addEventListener('mouseup', onMouseUp, false);
+        // document.addEventListener('mousemove', onMouseMove, false);
+        // document.addEventListener('mouseout', onMouseOut, false);
         document.addEventListener('keydown', onKeyDown, false);
         document.addEventListener('keyup', onKeyUp, false);
         window.addEventListener('resize', onWindowResize, false);
