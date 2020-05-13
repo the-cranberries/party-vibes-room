@@ -1,6 +1,8 @@
 module.exports = {
     mode: 'development',
-    entry: ['./client/index.js'],
+    entry: [
+        '@babel/polyfill', // enables async-await
+        './client/index.js'],
     output: {
         path: __dirname,
         filename: './public/bundle.js'
@@ -10,7 +12,10 @@ module.exports = {
     },
     module: {
         rules: [
-            { exclude: /node_modules/, }
+            {
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            }
         ]
     }
 }

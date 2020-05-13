@@ -1,3 +1,12 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import history from './history'
+import store from './store'
+import App from './app'
+
+
 import io from 'socket.io-client'
 import { loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer } from './client_world'
 
@@ -24,3 +33,12 @@ socket.on('updatePlayerLocation', function (data) {
 socket.on('removeOtherPlayer', function (data) {
     removeOtherPlayer(data);
 });
+
+ReactDOM.render(
+    <Provider store={store}>
+        <Router history={history}>
+            <App />
+        </Router>
+    </Provider>,
+    document.getElementById('app')
+)

@@ -188,160 +188,161 @@ var loadWorld = function () {
             return intersects;
         }
     };
+}
 
-    var playerForId = function (id) {
-        //get the right cubeID from otherPlayersID
-        //go through objects array until we find the right cube
-        //return that cube
+var playerForId = function (id) {
+    //get the right cubeID from otherPlayersID
+    //go through objects array until we find the right cube
+    //return that cube
 
-        let cubeID = otherPlayersID[id];
+    let cubeID = otherPlayersID[id];
 
-        for (let i = 0; i < objects.length; i++) {
-            if (objects[i].id === cubeID)
-                return objects[i];
-        }
-    };
+    for (let i = 0; i < objects.length; i++) {
+        if (objects[i].id === cubeID)
+            return objects[i];
+    }
+};
 
 
-    var createPlayer = function (data) {
-        //receiving data from the server
-        playerData = data;
+var createPlayer = function (data) {
+    //receiving data from the server
+    playerData = data;
 
-        var cube_geometry = new THREE.BoxGeometry(
-            data.sizeX * 2,
-            data.sizeY * 4,
-            data.sizeZ * 2
-        );
-        const iconLoader = new THREE.TextureLoader();
-        const cube_material = [
-            new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-            new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-            new THREE.MeshBasicMaterial({ color: 0x407294 }),
-            new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-            new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
-            new THREE.MeshBasicMaterial({ color: 0x407294 }),
-        ];
-        player = new THREE.Mesh(cube_geometry, cube_material);
+    var cube_geometry = new THREE.BoxGeometry(
+        data.sizeX * 2,
+        data.sizeY * 4,
+        data.sizeZ * 2
+    );
+    const iconLoader = new THREE.TextureLoader();
+    const cube_material = [
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+    ];
+    player = new THREE.Mesh(cube_geometry, cube_material);
 
-        player.rotation.set(0, 0, 0);
+    player.rotation.set(0, 0, 0);
 
-        //matching cube position to data position
-        player.position.x = data.x;
-        player.position.y = data.y;
-        player.position.z = data.z;
+    //matching cube position to data position
+    player.position.x = data.x;
+    player.position.y = data.y;
+    player.position.z = data.z;
 
-        playerId = data.playerId;
-        moveSpeed = data.speed;
-        // turnSpeed = data.turnSpeed;
+    playerId = data.playerId;
+    moveSpeed = data.speed;
+    // turnSpeed = data.turnSpeed;
 
-        objects.push(player);
-        scene.add(player);
+    objects.push(player);
+    scene.add(player);
 
-        camera.lookAt(player.position);
-    };
+    camera.lookAt(player.position);
+};
 
-    var updatePlayerPosition = function (data) {
-        var somePlayer = playerForId(data.playerId);
+var updatePlayerPosition = function (data) {
+    var somePlayer = playerForId(data.playerId);
 
-        somePlayer.position.x = data.x;
-        somePlayer.position.y = data.y;
-        somePlayer.position.z = data.z;
+    somePlayer.position.x = data.x;
+    somePlayer.position.y = data.y;
+    somePlayer.position.z = data.z;
 
-        // somePlayer.rotation.x = data.r_x;
-        // somePlayer.rotation.y = data.r_y;
-        // somePlayer.rotation.z = data.r_z;
-    };
+    // somePlayer.rotation.x = data.r_x;
+    // somePlayer.rotation.y = data.r_y;
+    // somePlayer.rotation.z = data.r_z;
+};
 
-    // var updatePlayerData = function () {
-    //   playerData.x = player.position.x;
-    //   playerData.y = player.position.y;
-    //   playerData.z = player.position.z;
+// var updatePlayerData = function () {
+//   playerData.x = player.position.x;
+//   playerData.y = player.position.y;
+//   playerData.z = player.position.z;
 
-    //   playerData.r_x = player.rotation.x;
-    //   playerData.r_y = player.rotation.y;
-    //   playerData.r_z = player.rotation.z;
-    // };
+//   playerData.r_x = player.rotation.x;
+//   playerData.r_y = player.rotation.y;
+//   playerData.r_z = player.rotation.z;
+// };
 
-    //moves your player 
-    var checkKeyStates = function () {
-        if ((keyState[38] || keyState[87]) && player.position.z > -23) {
-            //up arrow or 'w' - move forward
-            player.position.x -= moveSpeed * Math.sin(player.rotation.y);
-            player.position.z -= playermoveSpeed * Math.cos(player.rotation.y);
-            // updatePlayerData();
-            socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
-        }
+//moves your player 
+var checkKeyStates = function () {
+    if ((keyState[38] || keyState[87]) && player.position.z > -23) {
+        //up arrow or 'w' - move forward
+        player.position.x -= moveSpeed * Math.sin(player.rotation.y);
+        player.position.z -= playermoveSpeed * Math.cos(player.rotation.y);
+        // updatePlayerData();
+        socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    }
 
-        if ((keyState[40] || keyState[83]) && player.position.z < 5) {
-            //down arrow or 's' - move backward
-            player.position.x += moveSpeed * Math.sin(player.rotation.y);
-            player.position.z += moveSpeed * Math.cos(player.rotation.y);
-            // updatePlayerData();
-            socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
-        }
+    if ((keyState[40] || keyState[83]) && player.position.z < 5) {
+        //down arrow or 's' - move backward
+        player.position.x += moveSpeed * Math.sin(player.rotation.y);
+        player.position.z += moveSpeed * Math.cos(player.rotation.y);
+        // updatePlayerData();
+        socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    }
 
-        if ((keyState[37] || keyState[65]) && player.position.x > -14) {
-            // 'left arrow' or 'a' - move left
-            player.position.x -= moveSpeed * Math.cos(player.rotation.y);
-            player.position.z += moveSpeed * Math.sin(player.rotation.y);
-            // updatePlayerData();
-            socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
-        }
-        if ((keyState[39] || keyState[68]) && player.position.x < 17) {
-            // 'right arrow' or 'd'- move right
-            player.position.x += moveSpeed * Math.cos(player.rotation.y);
-            player.position.z -= moveSpeed * Math.sin(player.rotation.y);
-            // updatePlayerData();
-            socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
-        }
-        // if (keyState[65]) {
-        //   // a  - rotate left
-        //   player.rotation.y += turnSpeed;
-        //   updatePlayerData();
-        //   socket.emit('updatePosition', playerData);
-        // }
-        // if (keyState[68]) {
-        //   // d  - rotate right
-        //   player.rotation.y -= turnSpeed;
-        //   updatePlayerData();
-        //   socket.emit('updatePosition', playerData);
-        // }
-    };
+    if ((keyState[37] || keyState[65]) && player.position.x > -14) {
+        // 'left arrow' or 'a' - move left
+        player.position.x -= moveSpeed * Math.cos(player.rotation.y);
+        player.position.z += moveSpeed * Math.sin(player.rotation.y);
+        // updatePlayerData();
+        socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    }
+    if ((keyState[39] || keyState[68]) && player.position.x < 17) {
+        // 'right arrow' or 'd'- move right
+        player.position.x += moveSpeed * Math.cos(player.rotation.y);
+        player.position.z -= moveSpeed * Math.sin(player.rotation.y);
+        // updatePlayerData();
+        socket.emit('updatePosition', { playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    }
+    // if (keyState[65]) {
+    //   // a  - rotate left
+    //   player.rotation.y += turnSpeed;
+    //   updatePlayerData();
+    //   socket.emit('updatePosition', playerData);
+    // }
+    // if (keyState[68]) {
+    //   // d  - rotate right
+    //   player.rotation.y -= turnSpeed;
+    //   updatePlayerData();
+    //   socket.emit('updatePosition', playerData);
+    // }
+};
 
-    var addOtherPlayer = function (data) {
-        var cube_geometry = new THREE.BoxGeometry(
-            data.sizeX * 2,
-            data.sizeY * 4,
-            data.sizeZ * 2
-        );
-        const iconLoader = new THREE.TextureLoader();
-        const cube_material = [
-            new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-            new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-            new THREE.MeshBasicMaterial({ color: 0x407294 }),
-            new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
-            new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
+var addOtherPlayer = function (data) {
+    var cube_geometry = new THREE.BoxGeometry(
+        data.sizeX * 2,
+        data.sizeY * 4,
+        data.sizeZ * 2
+    );
+    const iconLoader = new THREE.TextureLoader();
+    const cube_material = [
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+        new THREE.MeshBasicMaterial({ color: 0x69bdd2 }),
+        new THREE.MeshBasicMaterial({ map: iconLoader.load('pietro.jpg') }), //front of object avatar
 
-            new THREE.MeshBasicMaterial({ color: 0x407294 }),
-        ];
-        var otherPlayer = new THREE.Mesh(cube_geometry, cube_material);
+        new THREE.MeshBasicMaterial({ color: 0x407294 }),
+    ];
+    var otherPlayer = new THREE.Mesh(cube_geometry, cube_material);
 
-        otherPlayer.position.x = data.x;
-        otherPlayer.position.y = data.y;
-        otherPlayer.position.z = data.z;
+    otherPlayer.position.x = data.x;
+    otherPlayer.position.y = data.y;
+    otherPlayer.position.z = data.z;
 
-        // otherPlayersId.push(data.playerId);
-        // otherPlayers.push(otherPlayer);
+    // otherPlayersId.push(data.playerId);
+    // otherPlayers.push(otherPlayer);
 
-        otherPlayersID[data.id] = otherPlayer.id;
-        console.log('otherPlayersID object: ', otherPlayersID);
+    otherPlayersID[data.id] = otherPlayer.id;
+    console.log('otherPlayersID object: ', otherPlayersID);
 
-        objects.push(otherPlayer);
-        scene.add(otherPlayer);
-    };
+    objects.push(otherPlayer);
+    scene.add(otherPlayer);
+};
 
-    var removeOtherPlayer = function (data) {
-        scene.remove(playerForId(data.playerId));
-    };
+var removeOtherPlayer = function (data) {
+    scene.remove(playerForId(data.playerId));
+};
 
-    export { loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer }
+export { loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer }
