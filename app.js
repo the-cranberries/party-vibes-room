@@ -37,11 +37,11 @@ io.on('connection', function (socket) {
   io.emit('createPlayer', player);
   //telling ALL client to render this player and add to local environment
 
-  // socket.broadcast.emit('addOtherPlayer', player);
-  // //telling all other clients to add this as another player
+  socket.broadcast.emit('addOtherPlayer', player);
+  //telling all other clients to add this as another player
 
   socket.on('updatePosition', function (data) {
-    console.log(data);
+    console.log('update position', data);
     var newData = world.updatePlayerData(data);
     socket.broadcast.emit('updatePlayerLocation', newData);
   });

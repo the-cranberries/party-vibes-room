@@ -1,7 +1,9 @@
 import io from 'socket.io-client'
-import {loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer} from './client_world'
+import {loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer, registerSocket} from './client_world'
 
 const socket = io();
+
+registerSocket(socket);
 
     socket.on('connect', function(){
         console.log('socket has connected', socket.id)
@@ -14,10 +16,12 @@ const socket = io();
     });
 
     socket.on('addOtherPlayer', function(data){
+        console.log('adding other play', data)
         addOtherPlayer(data);
     });
 
     socket.on('updatePlayerLocation', function(data){
+        console.log('update player position', data)
         updatePlayerPosition(data);
     });
 

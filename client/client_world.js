@@ -8,6 +8,21 @@ var container,
   objects = [];       //array of player cubes
 var keyState = {};
 
+var socket = null;
+//QQQ
+const registerSocket = (s) => socket = s;
+const withSocket = (f) => {
+  if (socket !== null) {
+    f(socket);
+  }
+};
+
+const assert = (bool, description) => {
+  if (!bool) {
+    throw new Error(JSON.stringify(description || "Assertion Failure"));
+  }
+};
+
 var player, playerId, moveSpeed; //took out turnSpeed
 //player is the rendered cube
 
@@ -133,13 +148,17 @@ var playerForId = function (id) {
   //get the right cubeID from otherPlayersID
   //go through objects array until we find the right cube
   //return that cube
+  assert(typeof id === "string");
+  assert(id in otherPlayersID);
 
   let cubeID = otherPlayersID[id];
+
 
   for (let i = 0; i < objects.length; i++) {
     if (objects[i].id === cubeID)
       return objects[i];
   }
+  console.log('ERROR NO PLAYER FOUND ID')
 };
 
 
@@ -209,7 +228,10 @@ var checkKeyStates = function () {
     player.position.x -= moveSpeed * Math.sin(player.rotation.y);
     player.position.z -= moveSpeed * Math.cos(player.rotation.y);
     // updatePlayerData();
-    // socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    withSocket(socket => {
+      socket.emit('updatePosition', {playerId, x: player.position.x, y: player.position.y, z: player.position.z });
+    });
+    
   }
 
   if ((keyState[40] || keyState[83]) && player.position.z < 5) {
@@ -273,7 +295,8 @@ var addOtherPlayer = function (data) {
   // otherPlayersId.push(data.playerId);
   // otherPlayers.push(otherPlayer);
 
-  otherPlayersID[data.id] = otherPlayer.id;
+  assert(typeof data.playerId === "string");
+  otherPlayersID[data.playerId] = otherPlayer.id;
   console.log('otherPlayersID object: ', otherPlayersID);
 
   objects.push(otherPlayer);
@@ -284,4 +307,4 @@ var removeOtherPlayer = function (data) {
   scene.remove(playerForId(data.playerId));
 };
 
-export {loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer}
+export {loadWorld, createPlayer, addOtherPlayer, updatePlayerPosition, removeOtherPlayer, registerSocket}
