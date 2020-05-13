@@ -16,15 +16,15 @@ io.on('connection', function (socket) {
   console.log(`user ${socket.id} connected`);
 
   //load ppl already at the party
-  socket.on('requestOldPlayers', () => {
-    for (var i = 0; i < world.allPlayers.length; i++) {
-      socket.emit('addOtherPlayer', world.players[i]);
-    }
-  });
+  // socket.on('requestOldPlayers', () => {
+  //   for (var i = 0; i < world.allPlayers.length; i++) {
+  //     socket.emit('addOtherPlayer', world.players[i]);
+  //   }
+  // });
 
-  //then create new player
+  // //then create new player
 
-  const id = socket.id;
+  // const id = socket.id;
   // world.addPlayer(id);
 
   // const player = world.addPlayer(id);
@@ -38,15 +38,15 @@ io.on('connection', function (socket) {
   // socket.broadcast.emit('addOtherPlayer', player);
   // //telling all other clients to add this as another player
 
-  socket.on('updatePosition', function (data) {
-    console.log(data);
-    var newData = world.updatePlayerData(data);
-    socket.broadcast.emit('updatePlayerLocation', newData);
-  });
+  // socket.on('updatePosition', function (data) {
+  //   console.log(data);
+  //   var newData = world.updatePlayerData(data);
+  //   socket.broadcast.emit('updatePlayerLocation', newData);
+  // });
   socket.on('disconnect', function () {
     console.log('user disconnected');
-    io.emit('removeOtherPlayer', player);
-    world.removePlayer(player);
+    // io.emit('removeOtherPlayer', player);
+    // world.removePlayer(player);
   });
 });
 

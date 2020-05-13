@@ -4,10 +4,9 @@ const Home = props => {
     return (
         <div>
             <main>
-                <img src="landing_page.jpg" />
-                <button>Become a Host</button>
-                <button>Join as a Host</button>
-                <button>Join as a Guest</button>
+                <button type="button">Become a Host</button>
+                <button type="button">Join as a Host</button>
+                <button type="button">Join as a Guest</button>
             </main>
         </div>
     );
