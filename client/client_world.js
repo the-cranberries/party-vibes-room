@@ -9,7 +9,7 @@ var container,
 var keyState = {};
 
 var socket = null;
-//QQQ
+//registerSocket allows index js to have socket in it's file. withSockets checks if their is a socket or not 
 const registerSocket = (s) => socket = s;
 const withSocket = (f) => {
   if (socket !== null) {
@@ -17,11 +17,6 @@ const withSocket = (f) => {
   }
 };
 
-const assert = (bool, description) => {
-  if (!bool) {
-    throw new Error(JSON.stringify(description || "Assertion Failure"));
-  }
-};
 
 var player, playerId, moveSpeed; //took out turnSpeed
 //player is the rendered cube
@@ -148,8 +143,6 @@ var playerForId = function (id) {
   //get the right cubeID from otherPlayersID
   //go through objects array until we find the right cube
   //return that cube
-  assert(typeof id === "string");
-  assert(id in otherPlayersID);
 
   let cubeID = otherPlayersID[id];
 
@@ -295,7 +288,7 @@ var addOtherPlayer = function (data) {
   // otherPlayersId.push(data.playerId);
   // otherPlayers.push(otherPlayer);
 
-  assert(typeof data.playerId === "string");
+ 
   otherPlayersID[data.playerId] = otherPlayer.id;
   console.log('otherPlayersID object: ', otherPlayersID);
 
